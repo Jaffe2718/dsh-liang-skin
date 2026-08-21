@@ -24,6 +24,7 @@ import {
 const PACKAGE_ID = "dsh-client-liang-intensity-skin";
 const LOCALE_NAMESPACE = "liang.skin";
 const ASSET_PREFIX = `/plugins/${PACKAGE_ID}/assets`;
+const FIRST_PORTRAIT_FILE = "portrait-source-v2/stage-00.webp";
 const BIND_EFFORT_KEY = "dsh-liang-intensity-skin.bind-effort";
 
 const PORTRAIT_ANCHORS = [
@@ -140,7 +141,6 @@ class SkinPresenter {
   private readonly scope: PreferenceStore;
   private readonly theme: ThemeService;
   private readonly root: HTMLDivElement;
-  private readonly poster: HTMLImageElement;
   private readonly portrait: HTMLImageElement;
   private readonly preloads: HTMLImageElement[];
   private portraitReady = false;
@@ -159,22 +159,18 @@ class SkinPresenter {
     this.root = document.createElement("div");
     this.root.className = "liang-skin-backdrop";
     this.root.dataset.plugin = PACKAGE_ID;
-    // Keep the stable poster visible while every portrait frame is fetched
-    // and decoded. A request being complete does not mean the bitmap is ready
-    // for a tear-free first swap.
-    this.root.dataset.media = "poster";
+    // Show the first half-body frame immediately while the remaining frames
+    // are fetched and decoded. A request being complete does not mean the
+    // bitmap is ready for a tear-free first swap.
+    this.root.dataset.media = "sequence";
     this.root.setAttribute("aria-hidden", "true");
-
-    this.poster = document.createElement("img");
-    this.poster.className = "liang-skin-poster";
-    this.poster.src = `${ASSET_PREFIX}/liang-poster.webp`;
-    this.poster.alt = "";
 
     this.portrait = document.createElement("img");
     this.portrait.className = "liang-skin-sequence-frame";
     this.portrait.alt = "";
     this.portrait.draggable = false;
     this.portrait.decoding = "async";
+    this.portrait.src = `${ASSET_PREFIX}/${FIRST_PORTRAIT_FILE}`;
     this.portrait.addEventListener("error", this.handleSequenceError);
 
     this.preloads = PORTRAIT_ANCHORS.map(({ file }) => {
@@ -197,24 +193,26 @@ class SkinPresenter {
         this.updatePortrait(paletteForFrame(this.frame).level);
       },
       () => {
-        if (!this.disposed) this.root.dataset.media = "poster";
+        // Keep the already-visible first half-body frame if another optional
+        // frame cannot be decoded. It is still a valid skin fallback.
       },
     );
 
-    this.root.append(this.portrait, this.poster);
+    this.root.append(this.portrait);
     document.body.prepend(this.root);
 
-    this.poster.addEventListener("error", this.handlePosterError);
     this.unsubscribe = scope.subscribe(() => this.syncSettings());
     this.syncSettings();
   }
 
   private readonly handleSequenceError = () => {
-    this.root.dataset.media = "poster";
-  };
-
-  private readonly handlePosterError = () => {
-    this.root.dataset.media = "color";
+    if (this.portrait.src.endsWith(FIRST_PORTRAIT_FILE)) {
+      this.root.dataset.media = "color";
+      return;
+    }
+    this.portraitReady = false;
+    this.portrait.src = `${ASSET_PREFIX}/${FIRST_PORTRAIT_FILE}`;
+    this.root.dataset.media = "sequence";
   };
 
   private syncSettings() {
@@ -312,7 +310,6 @@ class SkinPresenter {
     this.unsubscribe();
     if (this.raf !== 0) cancelAnimationFrame(this.raf);
     this.portrait.removeEventListener("error", this.handleSequenceError);
-    this.poster.removeEventListener("error", this.handlePosterError);
     for (const image of this.preloads) image.src = "";
     this.root.remove();
     document.body.removeAttribute("data-liang-skin");

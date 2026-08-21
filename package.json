@@ -17,7 +17,6 @@
     "./package.json": "./package.json"
   },
   "files": [
-    "assets/liang-poster.webp",
     "assets/portrait-source-v2/stage-00.webp",
     "assets/portrait-source-v2/level-01.webp",
     "assets/portrait-source-v2/level-03.webp",
