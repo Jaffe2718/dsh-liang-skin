@@ -36,12 +36,8 @@ dsh plugin --profile web add 'github:kingOfSoySauce/dsh-liang-skin'
 
 <table>
   <tr>
-    <td width="50%" align="center">
+    <td align="center">
       <img src="docs/preview.png" alt="滑动变祖皮肤效果截图" width="100%">
-      <br>
-    </td>
-    <td width="50%" align="center">
-      <img src="docs/demo.gif" alt="滑动变祖交互演示" width="100%">
       <br>
     </td>
   </tr>
