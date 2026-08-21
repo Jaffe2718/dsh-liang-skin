@@ -27,30 +27,30 @@ const ASSET_PREFIX = `/plugins/${PACKAGE_ID}/assets`;
 const BIND_EFFORT_KEY = "dsh-liang-intensity-skin.bind-effort";
 
 const PORTRAIT_ANCHORS = [
-  { level: 0, file: "stage-00.png" },
-  { level: 1, file: "level-01.png" },
-  { level: 3, file: "level-03.png" },
-  { level: 4, file: "level-04.png" },
-  { level: 6, file: "stage-06.png" },
-  { level: 7, file: "level-07.png" },
-  { level: 9, file: "level-09.png" },
-  { level: 10, file: "level-10.png" },
-  { level: 12, file: "stage-12.png" },
-  { level: 13, file: "level-13.png" },
-  { level: 14, file: "level-14.png" },
-  { level: 15, file: "bridge-15.png" },
-  { level: 16, file: "level-16.png" },
-  { level: 17, file: "level-17.png" },
-  { level: 18, file: "stage-18.png" },
-  { level: 19, file: "level-19.png" },
-  { level: 21, file: "level-21.png" },
-  { level: 22, file: "level-22.png" },
-  { level: 24, file: "stage-24.png" },
-  { level: 25, file: "level-25.png" },
-  { level: 27, file: "bridge-27.png" },
-  { level: 28, file: "level-28.png" },
-  { level: 29, file: "level-29.png" },
-  { level: 30, file: "stage-30.png" },
+  { level: 0, file: "stage-00.webp" },
+  { level: 1, file: "level-01.webp" },
+  { level: 3, file: "level-03.webp" },
+  { level: 4, file: "level-04.webp" },
+  { level: 6, file: "stage-06.webp" },
+  { level: 7, file: "level-07.webp" },
+  { level: 9, file: "level-09.webp" },
+  { level: 10, file: "level-10.webp" },
+  { level: 12, file: "stage-12.webp" },
+  { level: 13, file: "level-13.webp" },
+  { level: 14, file: "level-14.webp" },
+  { level: 15, file: "bridge-15.webp" },
+  { level: 16, file: "level-16.webp" },
+  { level: 17, file: "level-17.webp" },
+  { level: 18, file: "stage-18.webp" },
+  { level: 19, file: "level-19.webp" },
+  { level: 21, file: "level-21.webp" },
+  { level: 22, file: "level-22.webp" },
+  { level: 24, file: "stage-24.webp" },
+  { level: 25, file: "level-25.webp" },
+  { level: 27, file: "bridge-27.webp" },
+  { level: 28, file: "level-28.webp" },
+  { level: 29, file: "level-29.webp" },
+  { level: 30, file: "stage-30.webp" },
 ] as const;
 
 const ANCHOR_LEVELS = PORTRAIT_ANCHORS.map((anchor) => anchor.level);
@@ -167,7 +167,7 @@ class SkinPresenter {
 
     this.poster = document.createElement("img");
     this.poster.className = "liang-skin-poster";
-    this.poster.src = `${ASSET_PREFIX}/liang-poster.png`;
+    this.poster.src = `${ASSET_PREFIX}/liang-poster.webp`;
     this.poster.alt = "";
 
     this.portrait = document.createElement("img");
